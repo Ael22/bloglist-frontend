@@ -24,8 +24,10 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+    blogService.getAll().then(blogs => {
+      const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
+      setBlogs(sortedBlogs)
+    }
     )
   }, [])
 
@@ -47,7 +49,7 @@ const App = () => {
       setColor('red')
       setTimeout(() => {
         setMessage(null)
-      }, 3000);
+      }, 3000)
     }
   }
 
