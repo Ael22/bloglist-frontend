@@ -5,6 +5,9 @@ const Blog = ({ blog }) => {
   const [currentBlog, setCurrentBlog] = useState(blog)
   const [view, setView] = useState(false)
 
+  const loggedUserJSON = localStorage.getItem('loggedBloglistUser')
+  const loggedUser = loggedUserJSON ? JSON.parse(loggedUserJSON) : null
+
   const handleViewBlog = () => {
     setView(!view)
   }
@@ -38,17 +41,17 @@ const Blog = ({ blog }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      {currentBlog.title} {view ? '' : currentBlog.author} <button onClick={handleViewBlog}>{view ? 'hide' : 'view'}</button>
+    <div data-testid="blog-details" style={blogStyle}>
+      <span>{currentBlog.title}</span> {view ? '' : <span>{currentBlog.author}</span>} <button onClick={handleViewBlog}>{view ? 'hide' : 'view'}</button>
       {
         view
           ? <>
             <br />
-            {currentBlog.url} <br />
-            likes {currentBlog.likes} <button onClick={addLike}>like</button> <br />
-            {currentBlog.author} <br />
+            <span>{currentBlog.url}</span> <br />
+            <span>likes {currentBlog.likes}</span> <button onClick={addLike}>like</button> <br />
+            <span>{currentBlog.author}</span> <br />
             {
-              JSON.parse(localStorage.getItem('loggedBloglistUser')).username === currentBlog.user.username
+              loggedUser && loggedUser.username === currentBlog.user.username
                 ? <button onClick={handleDelete}>delete</button>
                 : ''
             }
